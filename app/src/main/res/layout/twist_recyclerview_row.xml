@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/twist_background"
+    android:backgroundTint="@color/grey"
+    android:layout_margin="10dp"
+    android:transitionName="homeToTwist"
+    >
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/postProfilePicture"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="#BB86FC"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="USERNAME"
+        android:textSize="20sp"
+
+        android:layout_toRightOf="@id/postProfilePicture"
+        android:id="@+id/postUsername"/>
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginLeft="7.5dp"
+        android:text="Posted at 2:47PM"
+        android:layout_toRightOf="@id/postUsername"
+        android:id="@+id/postDate"
+        android:textSize="10sp"
+        />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/postContent"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 Comments"
+            android:textSize="9sp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/postCommentCount"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 Likes"
+            android:textSize="9sp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/postUsername"
+        android:id="@+id/postContent"
+        android:layout_toRightOf="@id/postProfilePicture"
+        android:layout_marginLeft="10dp"
+        android:text="lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"
+        />
+
+
+
+</RelativeLayout>
+

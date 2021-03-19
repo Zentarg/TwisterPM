@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/twist_background"
+    android:backgroundTint="@color/grey"
+    android:layout_margin="10dp">
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/commentProfilePicture"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/purple_200"
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_outline_delete_24"
+        android:background="@drawable/rounded_corners"
+        android:id="@+id/commentDeleteBTN"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="USERNAME"
+        android:textSize="20sp"
+        android:layout_toLeftOf="@id/commentDeleteBTN"
+        android:layout_toRightOf="@id/commentProfilePicture"
+        android:id="@+id/commentUsername"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/commentProfilePicture"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 Likes"
+            android:textSize="9sp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/commentUsername"
+        android:id="@+id/commentContent"
+        android:layout_toRightOf="@id/commentProfilePicture"
+        android:layout_marginLeft="10dp"
+        android:text="lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"
+        />
+
+
+
+</RelativeLayout>
+

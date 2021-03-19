@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewTwistActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+
+        <ImageButton
+            android:layout_marginTop="2.5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="?attr/homeAsUpIndicator"
+            android:background="@drawable/rounded_corners"
+            android:id="@+id/cancelNewTwist"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Twist"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/navBackground"
+            android:id="@+id/postTwistBTN"
+            />
+        <TextView
+            android:layout_width="56dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="0/255"
+            android:layout_toLeftOf="@id/postTwistBTN"
+            android:id="@+id/twistLength"
+            android:gravity="center|right"
+            />
+
+        <ImageButton
+            android:layout_marginTop="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/newTwistProfilePicture"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/purple_200"
+            android:layout_below="@id/cancelNewTwist"
+            />
+        <EditText
+            android:hint="What's on your mind?"
+            android:padding="10dp"
+            android:textSize="17sp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:layout_below="@id/cancelNewTwist"
+            android:layout_toRightOf="@id/newTwistProfilePicture"
+            android:background="@drawable/rounded_corners"
+            android:gravity="top|left"
+            android:scrollbars="none"
+            android:id="@+id/twistBody"
+            android:transitionName="newTwistText"
+            android:maxLength="255"
+            />
+    </RelativeLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.ag.twisterpm.fragments.NavigationFragment"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/homeNavFragment"
+        />
+
+</RelativeLayout>

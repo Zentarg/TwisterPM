@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TwistActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:id="@+id/progress"
+        android:gravity="center"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:indeterminate="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading Comments..."
+            android:textSize="25sp"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/twist_background"
+        android:backgroundTint="@color/grey"
+        android:id="@+id/twist"
+        android:layout_margin="10dp"
+        android:transitionName="homeToTwist">
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/postProfilePicture"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/purple_200"
+            />
+
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_outline_delete_24"
+            android:background="@drawable/rounded_corners"
+            android:id="@+id/postDeleteBTN"
+            android:visibility="gone"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="USERNAME"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@id/postDeleteBTN"
+            android:layout_toRightOf="@id/postProfilePicture"
+            android:id="@+id/postUsername"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/postContent"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12 Comments"
+                android:textSize="9sp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/postCommentCount"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12 Likes"
+                android:textSize="9sp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/postUsername"
+            android:id="@+id/postContent"
+            android:layout_toRightOf="@id/postProfilePicture"
+            android:layout_marginLeft="10dp"
+            android:text="lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"
+            android:transitionName="newTwistText"
+            />
+
+
+
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/twist"
+        android:id="@+id/newComment"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:animateLayoutChanges="true">
+        <TextView
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:text="0/255"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:id="@+id/commentLength"
+            android:gravity="right"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write a new comment.."
+            android:background="@drawable/rounded_corners"
+            android:id="@+id/newCommentText"
+            android:paddingRight="56dp"
+            android:maxLength="255"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="Comment"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/purpleAccent"
+            android:id="@+id/newCommentBTN"
+            android:visibility="gone"
+            android:layout_below="@id/newCommentText"
+            />
+
+    </RelativeLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_below="@id/newComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/commentRefreshLayout"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingBottom="60dp"
+        android:animateLayoutChanges="true">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/commentRecyclerView"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.ag.twisterpm.fragments.NavigationFragment"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/homeNavFragment"
+        />
+
+</RelativeLayout>

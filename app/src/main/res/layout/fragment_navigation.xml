@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragments.NavigationFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/navBackground">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageButton
+                style="@style/navbarBTN"
+                android:src="@drawable/ic_outline_home_24"
+                android:id="@+id/homeBTN"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageButton
+                style="@style/navbarBTN"
+                android:src="@drawable/ic_baseline_search_24"
+                android:id="@+id/searchBTN"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageButton
+                style="@style/navbarBTN"
+                android:src="@drawable/ic_outline_settings_24"
+                android:id="@+id/settingsBTN"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageButton
+                style="@style/navbarBTN"
+                android:src="@drawable/ic_outline_logout_24"
+                android:id="@+id/logoutBTN"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/createBTN"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/purpleAccent"
+        android:src="@drawable/ic_outline_create_24"
+
+        />
+
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/addCommentFAB"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginRight="15dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/ic_outline_add_comment_24"-->
+<!--        android:backgroundTint="@color/purpleAccent"-->
+<!--        />-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/createBTN"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:background="@drawable/rounded_corners"-->
+<!--        android:backgroundTint="@color/purpleAccent"-->
+<!--        android:src="@drawable/ic_outline_create_24" />-->
+
+</RelativeLayout>
