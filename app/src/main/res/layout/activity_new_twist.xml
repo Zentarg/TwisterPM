@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewTwistActivity">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
+    tools:context=".NewTwistActivity"
+    android:orientation="vertical">
 
 
         <ImageButton
@@ -18,6 +14,7 @@
             android:src="?attr/homeAsUpIndicator"
             android:background="@drawable/rounded_corners"
             android:id="@+id/cancelNewTwist"
+            android:layout_margin="10dp"
             />
         <Button
             android:layout_width="wrap_content"
@@ -28,6 +25,7 @@
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/navBackground"
             android:id="@+id/postTwistBTN"
+            android:layout_margin="10dp"
             />
         <TextView
             android:layout_width="56dp"
@@ -38,6 +36,7 @@
             android:layout_toLeftOf="@id/postTwistBTN"
             android:id="@+id/twistLength"
             android:gravity="center|right"
+            android:layout_margin="10dp"
             />
 
         <ImageButton
@@ -48,6 +47,7 @@
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/purple_200"
             android:layout_below="@id/cancelNewTwist"
+            android:layout_marginLeft="10dp"
             />
         <EditText
             android:hint="What's on your mind?"
@@ -55,7 +55,7 @@
             android:textSize="17sp"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_above="@id/homeNavFragment"
             android:inputType="textMultiLine"
             android:layout_below="@id/cancelNewTwist"
             android:layout_toRightOf="@id/newTwistProfilePicture"
@@ -65,10 +65,10 @@
             android:id="@+id/twistBody"
             android:transitionName="newTwistText"
             android:maxLength="255"
-            />
-    </RelativeLayout>
+            android:layout_marginRight="10dp"
+            android:layout_height="0dp" />
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.ag.twisterpm.fragments.NavigationFragment"

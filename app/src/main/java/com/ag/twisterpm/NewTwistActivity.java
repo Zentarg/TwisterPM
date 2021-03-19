@@ -112,6 +112,8 @@ public class NewTwistActivity extends AppCompatActivity {
 
     }
 
+
+
     private void setTwistLength(int length) {
         twistLength.setText(length + "/255");
     }

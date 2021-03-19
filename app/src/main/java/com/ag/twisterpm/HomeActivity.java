@@ -2,6 +2,7 @@ package com.ag.twisterpm;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -19,11 +22,13 @@ import com.ag.twisterpm.models.Twist;
 import com.ag.twisterpm.services.TwisterService;
 import com.ag.twisterpm.utils.Constants;
 import com.ag.twisterpm.utils.TwistRecyclerViewAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +56,47 @@ public class HomeActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(() -> {
                 GetAndShowAllTwisters();
         });
+
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                if (position >= 0) {
+
+                    String user = twistRecyclerViewAdapter.getItem(position).getUser();
+                    if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
+                        deleteTwist(position);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                final int position = viewHolder.getAdapterPosition();
+                if (position >= 0) {
+                    String user = twistRecyclerViewAdapter.getItem(position).getUser();
+                    if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
+                        new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                                .addSwipeLeftBackgroundColor(ContextCompat.getColor(HomeActivity.this, R.color.delete))
+                                .addSwipeLeftActionIcon(R.drawable.ic_outline_delete_34)
+                                .create()
+                                .decorate();
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    }
+
+                }
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(twistersRecyclerView);
+
     }
 
     @Override
@@ -114,6 +160,35 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private void deleteTwist(int position) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.APIURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        TwisterService service = retrofit.create(TwisterService.class);
+
+        Call<Twist> twistCall = service.deleteTwist(twistRecyclerViewAdapter.getItem(position).getId().toString());
+        twistCall.enqueue(new Callback<Twist>() {
+            @Override
+            public void onResponse(Call<Twist> call, Response<Twist> response) {
+                Log.d(Constants.LOGTAG, response.body().toString());
+                if (response.isSuccessful()) {
+                    Toast.makeText(HomeActivity.this, "Successfully Deleted Comment", Toast.LENGTH_SHORT).show();
+                    allTwisters.remove(position);
+                    twistRecyclerViewAdapter.notifyItemRemoved(position);
+                } else {
+                    Log.d(Constants.LOGTAG, "Problem " + response.code() + " " + response.message());
+                    Toast.makeText(HomeActivity.this, "An error occurred, please try again later.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Twist> call, Throwable t) {
+                Log.e(Constants.LOGTAG, t.getMessage());
+                Toast.makeText(HomeActivity.this, "An error occurred, please try again later.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     private void PopulateRecyclerView(List<Twist> twists) {

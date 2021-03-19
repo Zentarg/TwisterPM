@@ -120,8 +120,7 @@ public class TwistActivity extends AppCompatActivity {
 
                     String user = commentRecyclerViewAdapter.getItem(position).getUser();
                     if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
-                        allComments.remove(position);
-                        commentRecyclerViewAdapter.notifyItemRemoved(position);
+                        deleteComment(position);
                     }
                 }
             }
@@ -187,22 +186,22 @@ public class TwistActivity extends AppCompatActivity {
         });
     }
 
-    private void deleteComment(Comment comment) {
+    private void deleteComment(int position) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.APIURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         TwisterService service = retrofit.create(TwisterService.class);
 
-        Call<Comment> twistCall = service.deleteComment(twist.getId().toString(), comment.getId().toString());
+        Call<Comment> twistCall = service.deleteComment(twist.getId().toString(), allComments.get(position).getId().toString());
         twistCall.enqueue(new Callback<Comment>() {
             @Override
             public void onResponse(Call<Comment> call, Response<Comment> response) {
                 Log.d(Constants.LOGTAG, response.body().toString());
                 if (response.isSuccessful()) {
                     Toast.makeText(TwistActivity.this, "Successfully Deleted Comment", Toast.LENGTH_SHORT).show();
-                    allComments.remove(comment);
-                    PopulateRecyclerView(allComments);
+                    allComments.remove(position);
+                    commentRecyclerViewAdapter.notifyItemRemoved(position);
                 } else {
                     Log.d(Constants.LOGTAG, "Problem " + response.code() + " " + response.message());
                     Toast.makeText(TwistActivity.this, "An error occurred, please try again later.", Toast.LENGTH_SHORT).show();
@@ -355,7 +354,7 @@ public class TwistActivity extends AppCompatActivity {
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(this, comments);
         commentRecyclerViewAdapter.SetClickListener((View v, int position) -> {
-            deleteComment(commentRecyclerViewAdapter.getItem(position));
+            deleteComment(position);
         });
 
         commentRecyclerView.setAdapter(commentRecyclerViewAdapter);
