@@ -5,7 +5,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/twist_background"
     android:backgroundTint="@color/grey"
-    android:layout_margin="10dp">
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"

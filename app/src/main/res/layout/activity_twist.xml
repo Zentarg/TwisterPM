@@ -160,8 +160,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/commentRefreshLayout"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:paddingBottom="60dp"
         android:animateLayoutChanges="true">
         <androidx.recyclerview.widget.RecyclerView

@@ -2,11 +2,14 @@ package com.ag.twisterpm;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,6 +35,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,6 +58,7 @@ public class TwistActivity extends AppCompatActivity {
     private Button commentBTN;
     private ImageButton postDeleteBTN;
     private TextView commentLength;
+    private CommentRecyclerViewAdapter commentRecyclerViewAdapter;
 
 
     @Override
@@ -100,6 +105,48 @@ public class TwistActivity extends AppCompatActivity {
         commentBTN.setOnClickListener(v -> NewComment());
 
         postDeleteBTN.setOnClickListener(v -> deletePost());
+
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                if (position >= 0) {
+
+                    String user = commentRecyclerViewAdapter.getItem(position).getUser();
+                    if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
+                        allComments.remove(position);
+                        commentRecyclerViewAdapter.notifyItemRemoved(position);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                final int position = viewHolder.getAdapterPosition();
+                if (position >= 0) {
+                    String user = commentRecyclerViewAdapter.getItem(position).getUser();
+                    if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
+                        new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                                .addSwipeLeftBackgroundColor(ContextCompat.getColor(TwistActivity.this, R.color.delete))
+                                .addSwipeLeftActionIcon(R.drawable.ic_outline_delete_34)
+                                .create()
+                                .decorate();
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    }
+
+                }
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(commentRecyclerView);
+
 
     }
 
@@ -306,7 +353,7 @@ public class TwistActivity extends AppCompatActivity {
 
     private void PopulateRecyclerView(List<Comment> comments) {
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CommentRecyclerViewAdapter commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(this, comments);
+        commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(this, comments);
         commentRecyclerViewAdapter.SetClickListener((View v, int position) -> {
             deleteComment(commentRecyclerViewAdapter.getItem(position));
         });
