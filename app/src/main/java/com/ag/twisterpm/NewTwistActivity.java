@@ -1,5 +1,6 @@
 package com.ag.twisterpm;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -21,12 +22,19 @@ import com.ag.twisterpm.TwistActivity;
 import com.ag.twisterpm.models.Twist;
 import com.ag.twisterpm.services.TwisterService;
 import com.ag.twisterpm.utils.Constants;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +50,9 @@ public class NewTwistActivity extends AppCompatActivity {
     private ImageButton cancelNewTwist;
     private TextView twistLength;
 
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference dRef = db.getReference();
+
 
 
     @Override
@@ -56,41 +67,59 @@ public class NewTwistActivity extends AppCompatActivity {
 
         twistLength = findViewById(R.id.twistLength);
 
+
         postTwistButton.setOnClickListener((View v) -> {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.APIURL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            TwisterService service = retrofit.create(TwisterService.class);
 
-            Twist newTwist = new Twist(0, twistBody.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), 0);
+            String id = dRef.child("twists").push().getKey();
+            Log.i(Constants.LOGTAG, id);
+            Twist newTwist = new Twist(id, FirebaseAuth.getInstance().getCurrentUser().getUid(), twistBody.getText().toString(), System.currentTimeMillis(), Collections.emptyList());
+            dRef.child("twists").child(id).setValue(newTwist)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.i(Constants.LOGTAG, "Successfully posted");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(Constants.LOGTAG, "Failed Posting", e);
+                        }
+                    });
 
-            Call<Twist> postTwistCall = service.postTwist(newTwist);
-
-
-
-            postTwistCall.enqueue(new Callback<Twist>() {
-                @Override
-                public void onResponse(Call<Twist> call, Response<Twist> response) {
-                    Log.e(Constants.LOGTAG, call.request().toString());
-                    Log.i(Constants.LOGTAG, response.body().toString());
-                    if (response.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Successfully created twist.", Toast.LENGTH_SHORT).show();
-                        TwistIntent(response.body());
-                    } else {
-                        Log.d(Constants.LOGTAG, "Problem occurred: " + response.code() + " " + response.message());
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<Twist> call, Throwable t) {
-
-                    Log.e(Constants.LOGTAG, t.getCause().getMessage());
-                    Log.e(Constants.LOGTAG, call.request().toString());
-                    Toast.makeText(getApplicationContext(), "An error occurred while posting Twist. Please try again later..", Toast.LENGTH_SHORT).show();
-                }
-            });
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl(Constants.APIURL)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
+//            TwisterService service = retrofit.create(TwisterService.class);
+//
+//            Twist newTwist = new Twist(0, twistBody.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), 0);
+//
+//            Call<Twist> postTwistCall = service.postTwist(newTwist);
+//
+//
+//
+//            postTwistCall.enqueue(new Callback<Twist>() {
+//                @Override
+//                public void onResponse(Call<Twist> call, Response<Twist> response) {
+//                    Log.e(Constants.LOGTAG, call.request().toString());
+//                    Log.i(Constants.LOGTAG, response.body().toString());
+//                    if (response.isSuccessful()) {
+//                        Toast.makeText(getApplicationContext(), "Successfully created twist.", Toast.LENGTH_SHORT).show();
+//                        TwistIntent(response.body());
+//                    } else {
+//                        Log.d(Constants.LOGTAG, "Problem occurred: " + response.code() + " " + response.message());
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Twist> call, Throwable t) {
+//
+//                    Log.e(Constants.LOGTAG, t.getCause().getMessage());
+//                    Log.e(Constants.LOGTAG, call.request().toString());
+//                    Toast.makeText(getApplicationContext(), "An error occurred while posting Twist. Please try again later..", Toast.LENGTH_SHORT).show();
+//                }
+//            });
         });
 
         cancelNewTwist.setOnClickListener(v -> {

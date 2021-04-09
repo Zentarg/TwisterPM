@@ -23,6 +23,11 @@ import com.ag.twisterpm.services.TwisterService;
 import com.ag.twisterpm.utils.Constants;
 import com.ag.twisterpm.utils.TwistRecyclerViewAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,6 +48,10 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout progress;
 
     private List<Twist> allTwisters;
+
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference dRef = db.getReference();
+
 
 
     @Override
@@ -69,10 +78,10 @@ public class HomeActivity extends AppCompatActivity {
                 final int position = viewHolder.getAdapterPosition();
                 if (position >= 0) {
 
-                    String user = twistRecyclerViewAdapter.getItem(position).getUser();
-                    if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
-                        deleteTwist(position);
-                    }
+//                    String user = twistRecyclerViewAdapter.getItem(position).getUser();
+//                    if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
+//                        deleteTwist(position);
+//                    }
                 }
             }
 
@@ -80,15 +89,15 @@ public class HomeActivity extends AppCompatActivity {
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 final int position = viewHolder.getAdapterPosition();
                 if (position >= 0) {
-                    String user = twistRecyclerViewAdapter.getItem(position).getUser();
-                    if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
-                        new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                                .addSwipeLeftBackgroundColor(ContextCompat.getColor(HomeActivity.this, R.color.delete))
-                                .addSwipeLeftActionIcon(R.drawable.ic_outline_delete_34)
-                                .create()
-                                .decorate();
-                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                    }
+//                    String user = twistRecyclerViewAdapter.getItem(position).getUser();
+//                    if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(user)) {
+//                        new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+//                                .addSwipeLeftBackgroundColor(ContextCompat.getColor(HomeActivity.this, R.color.delete))
+//                                .addSwipeLeftActionIcon(R.drawable.ic_outline_delete_34)
+//                                .create()
+//                                .decorate();
+//                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+//                    }
 
                 }
             }
@@ -118,45 +127,61 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(Constants.LOGTAG, "Done Loading");
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putSerializable(Constants.STATE_TWISTERS, new ArrayList(allTwisters));
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        allTwisters = (List<Twist>) savedInstanceState.getSerializable(Constants.STATE_TWISTERS);
-        PopulateRecyclerView(allTwisters);
-        super.onRestoreInstanceState(savedInstanceState);
-    }
+//    @Override
+//    protected void onSaveInstanceState(@NonNull Bundle outState) {
+//        outState.putSerializable(Constants.STATE_TWISTERS, new ArrayList(allTwisters));
+//        super.onSaveInstanceState(outState);
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+//        allTwisters = (List<Twist>) savedInstanceState.getSerializable(Constants.STATE_TWISTERS);
+//        PopulateRecyclerView(allTwisters);
+//        super.onRestoreInstanceState(savedInstanceState);
+//    }
 
     private void GetAndShowAllTwisters() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.APIURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        TwisterService service = retrofit.create(TwisterService.class);
+        Log.d(Constants.LOGTAG, "Get And Show All Twisters");
 
-        Call<List<Twist>> twistCall = service.getAllTwists();
-        twistCall.enqueue(new Callback<List<Twist>>() {
+        dRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onResponse(Call<List<Twist>> call, Response<List<Twist>> response) {
-                Log.d(Constants.LOGTAG, response.raw().toString());
-                if (response.isSuccessful()) {
-                    allTwisters = response.body();
-                    PopulateRecyclerView(allTwisters);
-                    OnDoneLoading();
-                } else {
-                    Log.d(Constants.LOGTAG, "Problem " + response.code() + " " + response.message());
-                }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Twist twist = snapshot.getValue(Twist.class);
+                Log.d(Constants.LOGTAG, twist.toString());
             }
 
             @Override
-            public void onFailure(Call<List<Twist>> call, Throwable t) {
-                Log.e(Constants.LOGTAG, t.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(Constants.LOGTAG, "Failed to read value.", error.toException());
             }
         });
+
+
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(Constants.APIURL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//        TwisterService service = retrofit.create(TwisterService.class);
+//
+//        Call<List<Twist>> twistCall = service.getAllTwists();
+//        twistCall.enqueue(new Callback<List<Twist>>() {
+//            @Override
+//            public void onResponse(Call<List<Twist>> call, Response<List<Twist>> response) {
+//                Log.d(Constants.LOGTAG, response.raw().toString());
+//                if (response.isSuccessful()) {
+//                    allTwisters = response.body();
+//                    PopulateRecyclerView(allTwisters);
+//                    OnDoneLoading();
+//                } else {
+//                    Log.d(Constants.LOGTAG, "Problem " + response.code() + " " + response.message());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Twist>> call, Throwable t) {
+//                Log.e(Constants.LOGTAG, t.getMessage());
+//            }
+//        });
 
     }
 

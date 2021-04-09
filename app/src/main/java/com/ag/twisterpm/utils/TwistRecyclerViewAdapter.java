@@ -38,9 +38,9 @@ public class TwistRecyclerViewAdapter extends RecyclerView.Adapter<TwistRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Twist twist = data.get(position);
-        holder.postUsername.setText(twist.getUser());
-        holder.postContent.setText(twist.getContent());
-        holder.postCommentCount.setText(twist.getTotalComments() == 1 ?twist.getTotalComments() + " Comment" : twist.getTotalComments() + " Comments");
+//        holder.postUsername.setText(twist.getUser());
+//        holder.postContent.setText(twist.getContent());
+//        holder.postCommentCount.setText(twist.getTotalComments() == 1 ?twist.getTotalComments() + " Comment" : twist.getTotalComments() + " Comments");
     }
 
     @Override

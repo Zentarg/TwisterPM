@@ -227,44 +227,44 @@ public class TwistActivity extends AppCompatActivity {
 
 
     private void NewComment() {
-        String text = commentText.getText().toString();
-
-        if (text.length() == 0) {
-            commentText.setError("Please write more than 0 characters.");
-            return;
-        }
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.APIURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        TwisterService service = retrofit.create(TwisterService.class);
-
-        Comment comment = new Comment(0, twist.getId(), text, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-
-        Call<Comment> postCommentCall = service.postComment(twist.getId().toString(), comment);
-
-        postCommentCall.enqueue(new Callback<Comment>() {
-            @Override
-            public void onResponse(Call<Comment> call, Response<Comment> response) {
-                Log.e(Constants.LOGTAG, call.request().toString());
-                if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Successfully posted Comment.", Toast.LENGTH_SHORT).show();
-                    OnCommentPosted(response.body());
-                } else {
-                    Log.d(Constants.LOGTAG, "Problem occurred: " + response.code() + " " + response.message());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Comment> call, Throwable t) {
-
-                Log.e(Constants.LOGTAG, t.getCause().getMessage());
-                Log.e(Constants.LOGTAG, call.request().toString());
-                Toast.makeText(getApplicationContext(), "An error occurred while posting Comment. Please try again later..", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        String text = commentText.getText().toString();
+//
+//        if (text.length() == 0) {
+//            commentText.setError("Please write more than 0 characters.");
+//            return;
+//        }
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(Constants.APIURL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//        TwisterService service = retrofit.create(TwisterService.class);
+//
+//        Comment comment = new Comment(0, twist.getId(), text, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+//
+//        Call<Comment> postCommentCall = service.postComment(twist.getId().toString(), comment);
+//
+//        postCommentCall.enqueue(new Callback<Comment>() {
+//            @Override
+//            public void onResponse(Call<Comment> call, Response<Comment> response) {
+//                Log.e(Constants.LOGTAG, call.request().toString());
+//                if (response.isSuccessful()) {
+//                    Toast.makeText(getApplicationContext(), "Successfully posted Comment.", Toast.LENGTH_SHORT).show();
+//                    OnCommentPosted(response.body());
+//                } else {
+//                    Log.d(Constants.LOGTAG, "Problem occurred: " + response.code() + " " + response.message());
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Comment> call, Throwable t) {
+//
+//                Log.e(Constants.LOGTAG, t.getCause().getMessage());
+//                Log.e(Constants.LOGTAG, call.request().toString());
+//                Toast.makeText(getApplicationContext(), "An error occurred while posting Comment. Please try again later..", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
     }
 
@@ -309,13 +309,13 @@ public class TwistActivity extends AppCompatActivity {
         TextView twistCommentCount = findViewById(R.id.postCommentCount);
         TextView twistContent = findViewById(R.id.postContent);
 
-        twistUsername.setText(twist.getUser());
-        twistCommentCount.setText(twist.getTotalComments() == 1 ?twist.getTotalComments() + " Comment" : twist.getTotalComments() + " Comments");
-        twistContent.setText(twist.getContent());
-
-        if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(twist.getUser())) {
-            postDeleteBTN.setVisibility(View.VISIBLE);
-        }
+//        twistUsername.setText(twist.getUser());
+//        twistCommentCount.setText(twist.getTotalComments() == 1 ?twist.getTotalComments() + " Comment" : twist.getTotalComments() + " Comments");
+//        twistContent.setText(twist.getContent());
+//
+//        if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(twist.getUser())) {
+//            postDeleteBTN.setVisibility(View.VISIBLE);
+//        }
 
     }
 
